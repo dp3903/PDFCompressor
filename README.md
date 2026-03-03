@@ -38,7 +38,7 @@ binary.
 
 ## Getting Started
 
-1. Create and activate a virtual environment (already created in this workspace):
+1. Create and activate a virtual environment:
    ```bash
    python -m venv .\venv   # Windows example
    .\venv\Scripts\activate
