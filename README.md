@@ -56,6 +56,66 @@ binary.
 
 4. Use the GUI to choose a PDF, adjust compression options, and save the result.
 
+## API Usage
+
+This project also includes a REST API (`API.py`) built with FastAPI for programmatic PDF compression. The API converts images to grayscale and compresses them to reduce file size.
+
+### Installing API Dependencies
+
+Install the additional dependencies required for the API:
+
+```bash
+pip install -r requirements-API.txt
+```
+
+### Running the API Server
+
+Start the API server using Uvicorn:
+
+```bash
+uvicorn API:app --reload
+```
+
+The server will run on `http://127.0.0.1:8000` by default. You can access the interactive API documentation at `http://127.0.0.1:8000/docs`.
+
+### Using the API
+
+#### Endpoint: POST /compress-pdf
+
+Upload a PDF file to compress it.
+
+- **Request**: Multipart form data with a file field named `file` (PDF only).
+- **Response**: The compressed PDF as a downloadable file.
+
+#### Example Usage with curl
+
+```bash
+curl -X POST "http://127.0.0.1:8000/compress-pdf" \
+     -H "accept: application/pdf" \
+     -H "Content-Type: multipart/form-data" \
+     -F "file=@yourfile.pdf" \
+     --output compressed_yourfile.pdf
+```
+
+#### Example Usage with Python
+
+```python
+import requests
+
+url = "http://127.0.0.1:8000/compress-pdf"
+files = {"file": open("yourfile.pdf", "rb")}
+response = requests.post(url, files=files)
+
+if response.status_code == 200:
+    with open("compressed_yourfile.pdf", "wb") as f:
+        f.write(response.content)
+    print("PDF compressed successfully!")
+else:
+    print(f"Error: {response.status_code}")
+```
+
+The API processes images by converting them to grayscale and saving as JPEG with quality set to 20 for maximum compression.
+
 ## Notes
 
 - The application currently compresses images within the PDF. It does not alter vector content.
